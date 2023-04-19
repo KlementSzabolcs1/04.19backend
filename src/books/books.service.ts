@@ -9,7 +9,8 @@ export class BooksService {
 constructor(private dataSource: DataSource) {}
 
   create(createBookDto: CreateBookDto) {
-    return 'This action adds a new book';
+    const book = Object.assign(new Book(), createBookDto);
+    return this.dataSource.getRepository(Book).save(book);
   }
 
   findAll() {
