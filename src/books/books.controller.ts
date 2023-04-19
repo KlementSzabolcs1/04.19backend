@@ -44,7 +44,7 @@ export class BooksController {
     rental.end_date.setDate(rental.start_date.getDate() + 7);
     const book = await bookRepo.findOneBy({ id });
     if (!book) {
-      throw new NotFoundException();
+      throw new NotFoundException('Nincs ilyen könyv');
     }
     rental.book = book;
     const letezo = await rentalRepo.findBy({
@@ -53,7 +53,7 @@ export class BooksController {
       end_date: MoreThan(rental.start_date),
     });
     if (letezo.length > 0) {
-      throw new ConflictException();
+      throw new ConflictException('A könyv már foglalt');
     }
     return rentalRepo.save(rental);
   }
